@@ -1,17 +1,15 @@
 <?php
 if ( isset( $_POST['submit'] ) ) {
 
-    $list_table_codes = file_get_contents( 'templates/list-table.php' );
-
+    $list_table_codes     = file_get_contents( 'templates/list-table.php' );
     $list_table_functions = file_get_contents( 'templates/list-table-functions.php' );
+    $list_table_view      = file_get_contents( 'templates/list-table-view.php' );
 
-    $list_table_view = file_get_contents( 'templates/list-table-view.php' );
-
-    $column_names = '';
-    $column_defaults = '';
+    $column_names         = '';
+    $column_defaults      = '';
 
     foreach ($_POST['table_key'] as $key => $value) {
-        $column_names .= "            '$value'      => __( '" . $_POST['table_value'][ $key ] . "', '" . $_POST['textdomain'] ."' ),\n";
+        $column_names    .= "            '$value'      => __( '" . $_POST['table_value'][ $key ] . "', '" . $_POST['textdomain'] ."' ),\n";
         $column_defaults .= "            case '$value':\n";
         $column_defaults .= "                return \$item->$value;\n\n";
     }
@@ -51,16 +49,11 @@ if ( isset( $_POST['submit'] ) ) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>List Table Generator</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container-fluid">
+<?php include 'header.php'; ?>
+
+<div class="container">
     <div class="row">
+
         <div class="col-md-8 col-md-offset-2">
 
             <div class="page-header">
@@ -185,8 +178,4 @@ if ( isset( $_POST['submit'] ) ) {
     </div>
 </div>
 
-<script src="assets/js/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript" charset="utf-8" async defer></script>
-<script src="assets/js/script.js" type="text/javascript" charset="utf-8" async defer></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>
