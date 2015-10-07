@@ -1,5 +1,9 @@
 <?php
 
+if ( ! class_exists ( 'WP_List_Table' ) ) {
+    require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+}
+
 /**
  * List table class
  */
@@ -63,14 +67,13 @@ class %class_name% extends \WP_List_Table {
      *
      * @return string
      */
-    function column_name( $item ) {
+    function column_%first_column%( $item ) {
 
         $actions           = array();
-        $delete_url        = '';
-        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', $delete_url, $item->id, __( 'Edit this item', '%textdomain%' ), __( 'Edit', '%textdomain%' ) );
-        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', $delete_url, $item->id, __( 'Delete this item', '%textdomain%' ), __( 'Delete', '%textdomain%' ) );
+        $actions['edit']   = sprintf( '<a href="%s" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=%PAGENAME%&action=edit&id=' . $item->id ), $item->id, __( 'Edit this item', '%textdomain%' ), __( 'Edit', '%textdomain%' ) );
+        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" data-id="%d" title="%s">%s</a>', admin_url( 'admin.php?page=%PAGENAME%&action=delete&id=' . $item->id ), $item->id, __( 'Delete this item', '%textdomain%' ), __( 'Delete', '%textdomain%' ) );
 
-        return sprintf( '<a href="#"><strong>%1$s</strong></a> %2$s', $item->title, $this->row_actions( $actions ) );
+        return sprintf( '<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url( 'admin.php?page=%PAGENAME%&action=view&id=' . $item->id ), $item->%first_column%, $this->row_actions( $actions ) );
     }
 
     /**

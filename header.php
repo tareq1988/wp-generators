@@ -23,9 +23,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="list-table.php">WP List Table</a>
-                    </li>
+                    <li><a href="admin-menu-page.php">Menu Page</a></li>
+                    <li><a href="list-table.php">WP List Table</a></li>
+                    <li><a href="form.php">Form Table</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

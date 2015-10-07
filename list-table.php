@@ -7,6 +7,7 @@ if ( isset( $_POST['submit'] ) ) {
 
     $column_names         = '';
     $column_defaults      = '';
+    $first_column         = $_POST['table_key'][0];
 
     foreach ($_POST['table_key'] as $key => $value) {
         $column_names    .= "            '$value'      => __( '" . $_POST['table_value'][ $key ] . "', '" . $_POST['textdomain'] ."' ),\n";
@@ -26,6 +27,8 @@ if ( isset( $_POST['submit'] ) ) {
         '%column_names%',
         '%column_defaults%',
         '%prefix%',
+        '%first_column%',
+        '%PAGENAME%',
     );
 
     $replace_array = array(
@@ -40,6 +43,8 @@ if ( isset( $_POST['submit'] ) ) {
         $column_names,
         $column_defaults,
         $_POST['prefix'],
+        $first_column,
+        $_POST['page_name'],
     );
 
     $list_table_codes     = str_replace( $search_array, $replace_array, $list_table_codes );
@@ -136,6 +141,13 @@ if ( isset( $_POST['submit'] ) ) {
                         <label class="col-md-4 control-label" for="textdomain">Textdomain</label>
                         <div class="col-md-4">
                             <input id="textdomain" name="textdomain" type="text" placeholder="wedevs" class="form-control input-md" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="page_name">Page Slug</label>
+                        <div class="col-md-4">
+                            <input id="page_name" name="page_name" type="text" placeholder="settings-page-slug" class="form-control input-md" required>
                         </div>
                     </div>
 
