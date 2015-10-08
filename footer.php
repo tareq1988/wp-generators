@@ -6,8 +6,8 @@
     </div>
 </footer>
 
-<script src="assets/js/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript" charset="utf-8" async defer></script>
-<script src="assets/js/script.js" type="text/javascript" charset="utf-8" async defer></script>
+<script src="assets/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/js/script.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
