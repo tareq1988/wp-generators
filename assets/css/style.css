@@ -6,3 +6,31 @@ footer.footer {
     text-align: center;
     border-top: 1px solid #e5e5e5;
 }
+
+.social-links {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+ul.social-buttons {
+    display: inline-block;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+ul.social-buttons li {
+    display: inline-block;
+    padding: 5px 8px;
+    line-height: 1;
+}
+
+ul.social-buttons iframe {
+    border: none;
+    overflow: hidden;
+}
+
+pre.prettyprint {
+    border: 1px solid #eee !important;
+    padding: 15px !important;
+}

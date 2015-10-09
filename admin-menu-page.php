@@ -32,7 +32,7 @@
                 $class_menu = str_replace( $search_array, $replace_array, $class_menu );
                 ?>
                 <p><strong><?php printf( 'class-%s.php', str_replace( '_', '-', strtolower( $_POST['class_name'] ) ) ); ?></strong></p>
-                <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $class_menu ); ?></pre>
+                <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $class_menu ); ?></pre>
             <?php } ?>
 
             <form class="form-horizontal" method="post">

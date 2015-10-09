@@ -7,7 +7,7 @@
             <tbody>%rows%</tbody>
         </table>
 
-        <input type="hidden" name="id" value="0">
+        <input type="hidden" name="field_id" value="0">
 
         <?php wp_nonce_field( '%nonce%' ); ?>
         <?php submit_button( __( '%submit_new_text%', '%textdomain%' ), 'primary', '%submit_name%' ); ?>

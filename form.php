@@ -22,13 +22,14 @@ function build_rows( $edit = false ) {
 
         switch ($input_type) {
             case 'text':
+            case 'number':
                 $value = '';
 
                 if ( $edit ) {
                     $value = sprintf( '<?php echo esc_attr( $item->%s ); ?>', $_POST['name'][$key] );
                 }
 
-                $rows .= $indent . $tab . $tab . sprintf( '<input type="text" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'], $value, $required ) . "\n";
+                $rows .= $indent . $tab . $tab . sprintf( '<input type="%6$s" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'], $value, $required, $input_type ) . "\n";
                 break;
 
             case 'textarea':
@@ -77,9 +78,9 @@ function build_rows( $edit = false ) {
 
         if ( ! empty( $_POST['help'][ $key ] ) ) {
             if ( $input_type == 'textarea' ) {
-                $rows .= $indent . $tab . $tab . '<p class="description">' . $_POST['help'][$key] . "</p>\n";
+                $rows .= $indent . $tab . $tab . '<p class="description"><?php _e(\'' . $_POST['help'][$key] . "', '{$_POST['textdomain']}' ); ?></p>\n";
             } else {
-                $rows .= $indent . $tab . $tab . '<span class="description">' . $_POST['help'][$key] . "</span>\n";
+                $rows .= $indent . $tab . $tab . '<span class="description"><?php _e(\'' . $_POST['help'][$key] . "', '{$_POST['textdomain']}' ); ?></span>\n";
             }
         }
 
@@ -105,14 +106,56 @@ include 'header.php'; ?>
             </div>
 
             <?php if ( isset( $_POST['submit'] ) ) {
-                $form_code    = file_get_contents( 'templates/form.php' );
-                $new_rows     = build_rows();
-                $edit_rows    = build_rows( true );
+                $form_code            = file_get_contents( 'templates/form.php' );
+                $form_handler         = file_get_contents( 'templates/form-handler.php' );
+                $form_functions         = file_get_contents( 'templates/form-functions.php' );
+
+                $new_rows             = build_rows();
+                $edit_rows            = build_rows( true );
+                $tab                  = '    ';
+
+                $form_fields          = '';
+                $required_form_fields = '';
+                $form_fields_array    = "array(\n";
+
+                foreach ($_POST['input_type'] as $key => $input_type) {
+                    switch ($input_type) {
+                        case 'number':
+                            $form_fields .= $tab . $tab . sprintf( '$%1$s = isset( $_POST[\'%1$s\'] ) ? intval( $_POST[\'%1$s\'] ) : 0;', $_POST['name'][$key] ) . "\n";
+                            break;
+
+                        case 'textarea':
+                            $form_fields .= $tab . $tab . sprintf( '$%1$s = isset( $_POST[\'%1$s\'] ) ? wp_kses_post( $_POST[\'%1$s\'] ) : \'\';', $_POST['name'][$key] ) . "\n";
+                            break;
+
+                        default:
+                            $form_fields .= $tab . $tab . sprintf( '$%1$s = isset( $_POST[\'%1$s\'] ) ? sanitize_text_field( $_POST[\'%1$s\'] ) : \'\';', $_POST['name'][$key] ) . "\n";
+                            break;
+                    }
+
+                    if ( $_POST['required'][ $key ] == 'yes' ) {
+                        $required_form_fields .= $tab . $tab . sprintf( 'if ( ! $%s ) {', $_POST['name'][ $key ] ) . "\n";
+                        $required_form_fields .= $tab . $tab . $tab . sprintf( '$errors[] = __( \'Error: %s is required\', \'%s\' );', $_POST['label'][ $key ], $_POST['textdomain'] ) . "\n";
+                        $required_form_fields .= $tab . $tab . "}\n\n";
+                    }
+
+                    $form_fields_array .= $tab . $tab . $tab . sprintf( '\'%1$s\' => $%1$s,', $_POST['name'][ $key ] ) . "\n";
+                }
+
+                $form_fields_array .= $tab . $tab . ");";
+
+                // var_dump($form_fields);
+                // var_dump($required_form_fields);
+                // var_dump($form_fields_array);
+
                 $search_array = array(
                     '%heading%',
                     '%textdomain%',
                     '%nonce%',
                     '%submit_name%',
+                    '%page_slug%',
+                    '%singular_name%',
+                    '%mysql_table%',
                 );
 
                 $replace_array = array(
@@ -120,17 +163,31 @@ include 'header.php'; ?>
                     $_POST['textdomain'],
                     $_POST['nonce'],
                     $_POST['submit_name'],
+                    $_POST['page_slug'],
+                    $_POST['singular_name'],
+                    $_POST['mysql_table'],
                 );
 
                 $new_code  = $edit_code = str_replace( $search_array, $replace_array, $form_code );
                 $new_code  = str_replace( array( '%rows%', '%submit_new_text%' ), array( $new_rows, $_POST['submit_new_text'] ), $new_code );
                 $edit_code = str_replace( array( '%rows%', '%submit_new_text%' ), array( $edit_rows, $_POST['submit_edit_text'] ), $edit_code );
+
+                $form_handler = str_replace( $search_array, $replace_array, $form_handler );
+                $form_handler = str_replace( array( '%form_fields%', '%required_form_fields%', '%form_fields_array%' ), array( $form_fields, $required_form_fields, $form_fields_array ), $form_handler );
+
+                $form_functions = str_replace( $search_array, $replace_array, $form_functions );
                 ?>
                 <p><strong>add-item.php</strong></p>
-                <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $new_code ); ?></pre>
+                <pre class="prettyprint"><?php echo htmlentities( $new_code ); ?></pre>
 
                 <p><strong>edit-item.php</strong></p>
-                <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $edit_code ); ?></pre>
+                <pre class="prettyprint"><?php echo htmlentities( $edit_code ); ?></pre>
+
+                <p><strong>class-form-handler.php</strong></p>
+                <pre class="prettyprint"><?php echo htmlentities( $form_handler ); ?></pre>
+
+                <p><strong>functions-<?php echo $_POST['singular_name']; ?>.php</strong></p>
+                <pre class="prettyprint"><?php echo htmlentities( $form_functions ); ?></pre>
             <?php } ?>
 
             <form class="form-horizontal" method="post">
@@ -177,6 +234,43 @@ include 'header.php'; ?>
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="page_slug">Page Slug</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">admin.php?page=</span>
+                            <input id="page_slug" name="page_slug" type="text" placeholder="test-page" class="form-control input-md"  value="<?php echo isset( $_POST['page_slug' ] ) ? $_POST['page_slug'] : ''; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="singular_name">Singular Name</label>
+                    <div class="col-md-4">
+                        <input id="singular_name" name="singular_name" type="text" placeholder="book" class="form-control input-md" value="<?php echo isset( $_POST['singular_name' ] ) ? $_POST['singular_name'] : ''; ?>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="mysql_table">MySQL Table Name</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">wp_</span>
+                            <input id="mysql_table" name="mysql_table" type="text" placeholder="comments" class="form-control input-md"  value="<?php echo isset( $_POST['mysql_table' ] ) ? $_POST['mysql_table'] : ''; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="date_field">Date Field</label>
+                    <div class="col-md-4">
+                        <label class="checkbox-inline" for="date_field-1">
+                            <input type="hidden" name="date_field" value="off">
+                            <input type="checkbox" name="date_field" id="date_field-1" value="on"> Add date field on insert statement
+                        </label>
+                    </div>
+                </div>
+
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -199,6 +293,7 @@ include 'header.php'; ?>
                                     <td>
                                         <select name="input_type[<?php echo $key; ?>]" class="form-control input-md">
                                             <option value="text" <?php echo $input_type == 'text' ? 'selected' : ''; ?>>Text</option>
+                                            <option value="number" <?php echo $input_type == 'number' ? 'selected' : ''; ?>>Number</option>
                                             <option value="textarea" <?php echo $input_type == 'textarea' ? 'selected' : ''; ?>>Text Area</option>
                                             <option value="select" <?php echo $input_type == 'select' ? 'selected' : ''; ?>>Select Dropdown</option>
                                             <option value="checkbox" <?php echo $input_type == 'checkbox' ? 'selected' : ''; ?>>Checkbox</option>
@@ -236,6 +331,7 @@ include 'header.php'; ?>
                                 <td>
                                     <select name="input_type[1]" class="form-control input-md">
                                         <option value="text">Text</option>
+                                        <option value="number">Number</option>
                                         <option value="textarea">Text Area</option>
                                         <option value="select">Select Dropdown</option>
                                         <option value="checkbox">Checkbox</option>

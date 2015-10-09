@@ -40,3 +40,16 @@ function %prefix%_get_%singular_name%_count() {
 
     return (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . $wpdb->prefix . '%mysql_table_name%' );
 }
+
+/**
+ * Fetch a single %singular_name% from database
+ *
+ * @param int   $id
+ *
+ * @return array
+ */
+function %prefix%_get_%singular_name%( $id = 0 ) {
+    global $wpdb;
+
+    return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . '%mysql_table_name% WHERE id = %d', $id ) );
+}

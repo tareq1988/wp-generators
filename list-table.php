@@ -67,13 +67,13 @@ if ( isset( $_POST['submit'] ) ) {
 
             <?php if ( isset( $_POST['submit'] ) ) { ?>
             <p><strong><?php printf( 'class-%s-list-table.php', $_POST['singular_name'] ); ?></strong></p>
-            <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_codes ); ?></pre>
+            <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_codes ); ?></pre>
 
             <p><strong><?php printf( '%s-functions.php', $_POST['singular_name'] ); ?></strong></p>
-            <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_functions ); ?></pre>
+            <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_functions ); ?></pre>
 
             <p><strong><?php printf( '%s-views.php', $_POST['singular_name'] ); ?></strong></p>
-            <pre style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_view ); ?></pre>
+            <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_view ); ?></pre>
             <?php } ?>
 
             <form class="form-horizontal" method="post">
@@ -97,7 +97,6 @@ if ( isset( $_POST['submit'] ) ) {
                         <label class="col-md-4 control-label" for="singular_name">Singular Name</label>
                         <div class="col-md-4">
                             <input id="singular_name" name="singular_name" type="text" placeholder="book" class="form-control input-md" required>
-
                         </div>
                     </div>
 
