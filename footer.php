@@ -2,7 +2,6 @@
     <div class="container">
         <div class="row">
 
-            <!--
             <div class="social-links">
                 <ul class="social-buttons">
                     <li>
@@ -19,18 +18,22 @@
                     </li>
                 </ul>
             </div>
-            -->
+
             <p>Made by <a href="http://tareq.wedevs.com">Tareq Hasan</a></p>
         </div>
     </div>
 </footer>
 
-<script src="assets/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="assets/js/jquery.min.js">\x3C/script>')</script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+<script>$.fn.modal || document.write('<script src="assets/js/bootstrap.min.js">\x3C/script>')</script>
+
+<script src="//cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script src="assets/js/script.js" type="text/javascript" charset="utf-8"></script>
-<!--
+
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
- -->
+
 </body>
 </html>
