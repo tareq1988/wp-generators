@@ -54,7 +54,7 @@ function build_rows( $edit = false ) {
                             $selected = sprintf( ' <?php selected( $item->%s, \'%s\' ); ?>', $_POST['name'][$key], $option[0] );
                         }
 
-                        $rows .= $indent . $tab . $tab . $tab . sprintf( '<option value="%s"%s>%s</option>', $option[0], $selected, trim( $option[1] ) ) . "\n";
+                        $rows .= $indent . $tab . $tab . $tab . sprintf( '<option value="%s"%s><?php echo __( \'%s\', \'%s\' ); ?></option>', $option[0], $selected, trim( $option[1] ), $_POST['textdomain'] ) . "\n";
                     }
                 }
 
