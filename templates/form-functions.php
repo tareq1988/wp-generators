@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Insert a new leave policy
+ * Insert a new %singular_name%
  *
  * @param array $args
  */

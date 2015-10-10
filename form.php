@@ -190,18 +190,18 @@ include 'header.php'; ?>
                 );
 
                 $new_code  = $edit_code = str_replace( $search_array, $replace_array, $form_code );
-                $new_code  = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%' ), array( $new_rows, $_POST['submit_new_text'], '' ), $new_code );
-                $edit_code = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%' ), array( $edit_rows, $_POST['submit_edit_text'], $retrieve_row ), $edit_code );
+                $new_code  = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%', '%field_id%' ), array( $new_rows, $_POST['submit_new_text'], '', '0' ), $new_code );
+                $edit_code = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%', '%field_id%' ), array( $edit_rows, $_POST['submit_edit_text'], $retrieve_row, '<?php echo $item->id; ?>' ), $edit_code );
 
                 $form_handler = str_replace( $search_array, $replace_array, $form_handler );
                 $form_handler = str_replace( array( '%form_fields%', '%required_form_fields%', '%form_fields_array%' ), array( $form_fields, $required_form_fields, $form_fields_array ), $form_handler );
 
                 $form_functions = str_replace( $search_array, $replace_array, $form_functions );
                 ?>
-                <p><strong>add-item.php</strong></p>
+                <p><strong><?php echo $_POST['singular_name']; ?>-new.php</strong></p>
                 <pre class="prettyprint"><?php echo htmlentities( $new_code ); ?></pre>
 
-                <p><strong>edit-item.php</strong></p>
+                <p><strong><?php echo $_POST['singular_name']; ?>-edit.php</strong></p>
                 <pre class="prettyprint"><?php echo htmlentities( $edit_code ); ?></pre>
 
                 <p><strong>class-form-handler.php</strong></p>

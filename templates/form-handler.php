@@ -16,7 +16,7 @@ class Form_Handler {
     }
 
     /**
-     * Add entitlement with leave policies to employees
+     * Handle the %singular_name% new and edit form
      *
      * @return void
      */
@@ -52,13 +52,13 @@ class Form_Handler {
         // New or edit?
         if ( ! $field_id ) {
 
-            prefix_insert_%singular_name%( $fields );
+            %prefix%_insert_%singular_name%( $fields );
 
         } else {
 
             $fields['id'] = $field_id;
 
-            prefix_insert_%singular_name%( $fields );
+            %prefix%_insert_%singular_name%( $fields );
         }
 
         $redirect_to = add_query_arg( array( 'affected' => $affected ), $page_url );
