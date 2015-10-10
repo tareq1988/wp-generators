@@ -108,7 +108,7 @@ include 'header.php'; ?>
             <?php if ( isset( $_POST['submit'] ) ) {
                 $form_code            = file_get_contents( 'templates/form.php' );
                 $form_handler         = file_get_contents( 'templates/form-handler.php' );
-                $form_functions         = file_get_contents( 'templates/form-functions.php' );
+                $form_functions       = file_get_contents( 'templates/form-functions.php' );
 
                 $new_rows             = build_rows();
                 $edit_rows            = build_rows( true );
@@ -117,6 +117,13 @@ include 'header.php'; ?>
                 $form_fields          = '';
                 $required_form_fields = '';
                 $form_fields_array    = "array(\n";
+                $add_date_field       = '';
+                $form_default_array   = '';
+                $wp_errors            = $tab . "// some basic validation\n";
+
+                if ( $_POST['date_field'] == 'on' ) {
+                    $add_date_field = '$args[\'date\'] = current_time( \'mysql\' );';
+                }
 
                 foreach ($_POST['input_type'] as $key => $input_type) {
                     switch ($input_type) {
@@ -137,9 +144,14 @@ include 'header.php'; ?>
                         $required_form_fields .= $tab . $tab . sprintf( 'if ( ! $%s ) {', $_POST['name'][ $key ] ) . "\n";
                         $required_form_fields .= $tab . $tab . $tab . sprintf( '$errors[] = __( \'Error: %s is required\', \'%s\' );', $_POST['label'][ $key ], $_POST['textdomain'] ) . "\n";
                         $required_form_fields .= $tab . $tab . "}\n\n";
+
+                        $wp_errors .= $tab . sprintf( 'if ( empty( $args[\'%s\'] ) ) {', $_POST['name'][$key] ) . "\n";
+                        $wp_errors .= $tab . $tab . sprintf( 'return new WP_Error( \'no-%s\', __( \'No %s provided.\', \'%s\' ) );', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'] ) . "\n";
+                        $wp_errors .= $tab . "}\n";
                     }
 
                     $form_fields_array .= $tab . $tab . $tab . sprintf( '\'%1$s\' => $%1$s,', $_POST['name'][ $key ] ) . "\n";
+                    $form_default_array .= $tab . $tab . sprintf( '\'%1$s\' => \'\',', $_POST['name'][ $key ] ) . "\n";
                 }
 
                 $form_fields_array .= $tab . $tab . ");";
@@ -156,6 +168,9 @@ include 'header.php'; ?>
                     '%page_slug%',
                     '%singular_name%',
                     '%mysql_table%',
+                    '%add_date_field%',
+                    '%form_default_array%',
+                    '%wp_errors%',
                 );
 
                 $replace_array = array(
@@ -166,6 +181,9 @@ include 'header.php'; ?>
                     $_POST['page_slug'],
                     $_POST['singular_name'],
                     $_POST['mysql_table'],
+                    $add_date_field,
+                    $form_default_array,
+                    $wp_errors,
                 );
 
                 $new_code  = $edit_code = str_replace( $search_array, $replace_array, $form_code );
@@ -266,7 +284,7 @@ include 'header.php'; ?>
                     <div class="col-md-4">
                         <label class="checkbox-inline" for="date_field-1">
                             <input type="hidden" name="date_field" value="off">
-                            <input type="checkbox" name="date_field" id="date_field-1" value="on"> Add date field on insert statement
+                            <input type="checkbox" name="date_field" id="date_field-1" value="on" <?php echo isset( $_POST['date_field'] ) && $_POST['date_field'] == 'on' ? 'checked': ''; ?>> Add date field on insert statement
                         </label>
                     </div>
                 </div>

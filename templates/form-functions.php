@@ -10,26 +10,20 @@ function prefix_insert_%singular_name%( $args = array() ) {
 
     $defaults = array(
         'id'         => null,
-        'date'      => current_time( 'mysql' )
+%form_default_array%
     );
 
     $args       = wp_parse_args( $args, $defaults );
     $table_name = $wpdb->prefix . '%mysql_table%';
 
-    // some basic validation
-    if ( empty( $args['name'] ) ) {
-        return new WP_Error( 'no-name', __( 'No name provided.', 'wp-error' ) );
-    }
-
-    if ( ! intval( $args['value'] ) ) {
-        return new WP_Error( 'no-value', __( 'No duration provided.', 'wp-error' ) );
-    }
-
+%wp_errors%
     // remove row id to determine if new or update
     $row_id = (int) $args['id'];
     unset( $args['id'] );
 
     if ( ! $row_id ) {
+
+        %add_date_field%
 
         // insert a new
         if ( $wpdb->insert( $table_name, $args ) ) {
