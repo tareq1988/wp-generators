@@ -52,16 +52,21 @@ class Form_Handler {
         // New or edit?
         if ( ! $field_id ) {
 
-            %prefix%_insert_%singular_name%( $fields );
+            $insert_id = %prefix%_insert_%singular_name%( $fields );
 
         } else {
 
             $fields['id'] = $field_id;
 
-            %prefix%_insert_%singular_name%( $fields );
+            $insert_id = %prefix%_insert_%singular_name%( $fields );
         }
 
-        $redirect_to = add_query_arg( array( 'affected' => $affected ), $page_url );
+        if ( is_wp_error( $insert_id ) ) {
+            $redirect_to = add_query_arg( array( 'message' => 'error' ), $page_url );
+        } else {
+            $redirect_to = add_query_arg( array( 'message' => 'success' ), $page_url );
+        }
+
         wp_safe_redirect( $redirect_to );
         exit;
     }
