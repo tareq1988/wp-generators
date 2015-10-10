@@ -29,7 +29,7 @@ function build_rows( $edit = false ) {
                     $value = sprintf( '<?php echo esc_attr( $item->%s ); ?>', $_POST['name'][$key] );
                 }
 
-                $rows .= $indent . $tab . $tab . sprintf( '<input type="%6$s" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'], $value, $required, $input_type ) . "\n";
+                $rows .= $indent . $tab . $tab . sprintf( '<input type="%6$s" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required, $input_type ) . "\n";
                 break;
 
             case 'textarea':
@@ -38,7 +38,7 @@ function build_rows( $edit = false ) {
                 if ( $edit ) {
                     $value = sprintf( '<?php echo esc_textarea( $item->%s ); ?>', $_POST['name'][$key] );
                 }
-                $rows .= $indent . $tab . $tab . sprintf( '<textarea name="%1$s" id="%1$s"placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" rows="5" cols="30"%5$s>%4$s</textarea>', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'], $value, $required ) . "\n";
+                $rows .= $indent . $tab . $tab . sprintf( '<textarea name="%1$s" id="%1$s"placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" rows="5" cols="30"%5$s>%4$s</textarea>', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required ) . "\n";
                 break;
 
             case 'select':
