@@ -20,12 +20,14 @@
                 <a class="navbar-brand" href="index.php">WP Generator</a>
             </div>
 
+            <?php $file_name = basename( $_SERVER['SCRIPT_NAME'] ); ?>
+
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="admin-menu-page.php">Menu Page</a></li>
-                    <li><a href="list-table.php">WP List Table</a></li>
-                    <li><a href="form.php">Form Table</a></li>
+                    <li<?php echo $file_name == 'admin-menu-page.php' ? ' class="active"' : ''; ?>><a href="admin-menu-page.php">Menu Page</a></li>
+                    <li<?php echo $file_name == 'list-table.php' ? ' class="active"' : ''; ?>><a href="list-table.php">WP List Table</a></li>
+                    <li<?php echo $file_name == 'form.php' ? ' class="active"' : ''; ?>><a href="form.php">Form Table</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
