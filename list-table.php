@@ -81,74 +81,83 @@ if ( isset( $_POST['submit'] ) ) {
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="class">Class Name</label>
-                        <div class="col-md-4">
-                            <input id="class" name="class_name" type="text" placeholder="WeDevs_Transaction_List_Table" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="class" name="class_name" type="text" placeholder="WeDevs_Transaction_List_Table" class="form-control input-md" required value="<?php echo isset( $_POST['class_name' ] ) ? $_POST['class_name'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="heading">Heading Title</label>
-                        <div class="col-md-4">
-                            <input id="heading" name="heading" type="text" placeholder="Page heading name: Transactions" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="heading" name="heading" type="text" placeholder="Page heading name: Transactions" class="form-control input-md" value="<?php echo isset( $_POST['heading' ] ) ? $_POST['heading'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="singular_name">Singular Name</label>
-                        <div class="col-md-4">
-                            <input id="singular_name" name="singular_name" type="text" placeholder="book" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="singular_name" name="singular_name" type="text" placeholder="book" class="form-control input-md" value="<?php echo isset( $_POST['singular_name' ] ) ? $_POST['singular_name'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="plural_name">Plural Name</label>
-                        <div class="col-md-4">
-                            <input id="plural_name" name="plural_name" type="text" placeholder="books" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="plural_name" name="plural_name" type="text" placeholder="books" class="form-control input-md" value="<?php echo isset( $_POST['plural_name' ] ) ? $_POST['plural_name'] : ''; ?>">
 
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="no_items">No Items Text</label>
-                        <div class="col-md-4">
-                            <input id="no_items" name="no_items" type="text" placeholder="No books found" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="no_items" name="no_items" type="text" placeholder="No books found" class="form-control input-md" value="<?php echo isset( $_POST['no_items' ] ) ? $_POST['no_items'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="per_page">Items Per Page</label>
-                        <div class="col-md-4">
-                            <input id="per_page" name="per_page" type="text" placeholder="20" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="per_page" name="per_page" type="text" placeholder="20" class="form-control input-md"  value="<?php echo isset( $_POST['per_page' ] ) ? $_POST['per_page'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="mysql_table_name">MySQL Table Name</label>
-                        <div class="col-md-4">
-                            <input id="mysql_table_name" name="mysql_table_name" type="text" placeholder="wp_comments" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-addon">wp_</span>
+                                <input id="mysql_table_name" name="mysql_table_name" type="text" placeholder="comments" class="form-control input-md" value="<?php echo isset( $_POST['mysql_table_name' ] ) ? $_POST['mysql_table_name'] : ''; ?>">
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="prefix">Function Prefix</label>
-                        <div class="col-md-4">
-                            <input id="prefix" name="prefix" type="text" placeholder="wedevs" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input id="prefix" name="prefix" type="text" placeholder="wd" class="form-control input-md" value="<?php echo isset( $_POST['prefix' ] ) ? $_POST['prefix'] : ''; ?>">
+                                <span class="input-group-addon">_function_name</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textdomain">Textdomain</label>
-                        <div class="col-md-4">
-                            <input id="textdomain" name="textdomain" type="text" placeholder="wedevs" class="form-control input-md" required>
+                        <div class="col-md-5">
+                            <input id="textdomain" name="textdomain" type="text" placeholder="wedevs" class="form-control input-md"  value="<?php echo isset( $_POST['textdomain' ] ) ? $_POST['textdomain'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="page_name">Page Slug</label>
-                        <div class="col-md-4">
-                            <input id="page_name" name="page_name" type="text" placeholder="settings-page-slug" class="form-control input-md" required>
+                    <label class="col-md-4 control-label" for="page_name">Page Slug</label>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">admin.php?page=</span>
+                            <input id="page_name" name="page_name" type="text" placeholder="test-page" class="form-control input-md"  value="<?php echo isset( $_POST['page_name' ] ) ? $_POST['page_name'] : ''; ?>">
                         </div>
                     </div>
+                </div>
 
                     <h3>Table Columns</h3>
                     <table class="table table-striped">

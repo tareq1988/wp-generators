@@ -285,7 +285,10 @@ include 'header.php'; ?>
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="prefix">Function Prefix</label>
                     <div class="col-md-4">
-                        <input id="prefix" name="prefix" type="text" placeholder="wedevs" class="form-control input-md" value="<?php echo isset( $_POST['prefix' ] ) ? $_POST['prefix'] : ''; ?>">
+                        <div class="input-group">
+                            <input id="prefix" name="prefix" type="text" placeholder="wd" class="form-control input-md" value="<?php echo isset( $_POST['prefix' ] ) ? $_POST['prefix'] : ''; ?>">
+                            <span class="input-group-addon">_function_name</span>
+                        </div>
                     </div>
                 </div>
 

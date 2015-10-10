@@ -40,49 +40,55 @@
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="class">Class Name</label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <input id="class" name="class_name" type="text" placeholder="Test_Admin_Menu" class="form-control input-md" value="<?php echo isset( $_POST['class_name' ] ) ? $_POST['class_name'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="menu_title">Menu Title</label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <input id="menu_title" name="menu_title" type="text" placeholder="Admin Menu Title" class="form-control input-md" value="<?php echo isset( $_POST['menu_title' ] ) ? $_POST['menu_title'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="capability">Capability</label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <input id="capability" name="capability" type="text" placeholder="manage_options" class="form-control input-md" value="<?php echo isset( $_POST['capability' ] ) ? $_POST['capability'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="page_slug">Page Slug</label>
-                        <div class="col-md-4">
-                            <input id="page_slug" name="page_slug" type="text" placeholder="settings-page-slug" class="form-control input-md" value="<?php echo isset( $_POST['page_slug' ] ) ? $_POST['page_slug'] : ''; ?>">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-addon">admin.php?page=</span>
+                                <input id="page_slug" name="page_slug" type="text" placeholder="test-page" class="form-control input-md"  value="<?php echo isset( $_POST['page_slug' ] ) ? $_POST['page_slug'] : ''; ?>">
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="file_prefix">File Name Prefix</label>
-                        <div class="col-md-4">
-                            <input id="file_prefix" name="file_prefix" type="text" placeholder="transaction" class="form-control input-md" value="<?php echo isset( $_POST['file_prefix' ] ) ? $_POST['file_prefix'] : ''; ?>">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input id="file_prefix" name="file_prefix" type="text" placeholder="transaction" class="form-control input-md" value="<?php echo isset( $_POST['file_prefix' ] ) ? $_POST['file_prefix'] : ''; ?>">
+                                <span class="input-group-addon">-list.php</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textdomain">Textdomain</label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <input id="textdomain" name="textdomain" type="text" placeholder="wedevs" class="form-control input-md" value="<?php echo isset( $_POST['textdomain' ] ) ? $_POST['textdomain'] : ''; ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="submit"></label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <button id="submit" name="submit" class="btn btn-primary">Generate Table</button>
                         </div>
                     </div>
