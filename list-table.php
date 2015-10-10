@@ -72,7 +72,7 @@ if ( isset( $_POST['submit'] ) ) {
             <p><strong><?php printf( '%s-functions.php', $_POST['singular_name'] ); ?></strong></p>
             <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_functions ); ?></pre>
 
-            <p><strong><?php printf( '%s-views.php', $_POST['singular_name'] ); ?></strong></p>
+            <p><strong><?php printf( '%s-list.php', $_POST['singular_name'] ); ?></strong></p>
             <pre class="prettyprint" style="overflow-y: scroll;width:100%;"><?php echo htmlentities( $list_table_view ); ?></pre>
             <?php } ?>
 
