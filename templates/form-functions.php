@@ -5,7 +5,7 @@
  *
  * @param array $args
  */
-function prefix_insert_%singular_name%( $args = array() ) {
+function %prefix%_insert_%singular_name%( $args = array() ) {
     global $wpdb;
 
     $defaults = array(

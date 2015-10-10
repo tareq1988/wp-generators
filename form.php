@@ -119,6 +119,7 @@ include 'header.php'; ?>
                 $form_fields_array    = "array(\n";
                 $add_date_field       = '';
                 $form_default_array   = '';
+                $retrieve_row         = "\n\n" . $tab . sprintf( '<?php $item = %s_get_%s( $id ); ?>', $_POST['prefix'], $_POST['singular_name'] );
                 $wp_errors            = $tab . "// some basic validation\n";
 
                 if ( $_POST['date_field'] == 'on' ) {
@@ -171,6 +172,7 @@ include 'header.php'; ?>
                     '%add_date_field%',
                     '%form_default_array%',
                     '%wp_errors%',
+                    '%prefix%',
                 );
 
                 $replace_array = array(
@@ -184,11 +186,12 @@ include 'header.php'; ?>
                     $add_date_field,
                     $form_default_array,
                     $wp_errors,
+                    $_POST['prefix'],
                 );
 
                 $new_code  = $edit_code = str_replace( $search_array, $replace_array, $form_code );
-                $new_code  = str_replace( array( '%rows%', '%submit_new_text%' ), array( $new_rows, $_POST['submit_new_text'] ), $new_code );
-                $edit_code = str_replace( array( '%rows%', '%submit_new_text%' ), array( $edit_rows, $_POST['submit_edit_text'] ), $edit_code );
+                $new_code  = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%' ), array( $new_rows, $_POST['submit_new_text'], '' ), $new_code );
+                $edit_code = str_replace( array( '%rows%', '%submit_new_text%', '%retrieve_row%' ), array( $edit_rows, $_POST['submit_edit_text'], $retrieve_row ), $edit_code );
 
                 $form_handler = str_replace( $search_array, $replace_array, $form_handler );
                 $form_handler = str_replace( array( '%form_fields%', '%required_form_fields%', '%form_fields_array%' ), array( $form_fields, $required_form_fields, $form_fields_array ), $form_handler );
@@ -274,8 +277,15 @@ include 'header.php'; ?>
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-addon">wp_</span>
-                            <input id="mysql_table" name="mysql_table" type="text" placeholder="comments" class="form-control input-md"  value="<?php echo isset( $_POST['mysql_table' ] ) ? $_POST['mysql_table'] : ''; ?>">
+                            <input id="mysql_table" name="mysql_table" type="text" placeholder="comments" class="form-control input-md" value="<?php echo isset( $_POST['mysql_table' ] ) ? $_POST['mysql_table'] : ''; ?>">
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="prefix">Function Prefix</label>
+                    <div class="col-md-4">
+                        <input id="prefix" name="prefix" type="text" placeholder="wedevs" class="form-control input-md" value="<?php echo isset( $_POST['prefix' ] ) ? $_POST['prefix'] : ''; ?>">
                     </div>
                 </div>
 
