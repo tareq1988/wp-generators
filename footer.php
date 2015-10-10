@@ -14,7 +14,7 @@
                         <a href="https://twitter.com/tareq_cse" class="twitter-follow-button" data-show-count="false">Follow @tareq_cse</a>
                     </li>
                     <li class="tweet-btn">
-                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Checkout this awesome #WordPress Code Generator, its pretty cool!" data-via="tareq_cse">Tweet</a>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://projects.tareq.co/wp-generator/" data-text="Checkout this awesome #WordPress Code Generator, its pretty cool!" data-via="tareq_cse">Tweet</a>
                     </li>
                 </ul>
             </div>
