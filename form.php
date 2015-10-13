@@ -337,7 +337,7 @@ include 'header.php'; ?>
                                         <input id="textdomain" name="label[<?php echo $key; ?>]" type="text" placeholder="Field Label" class="form-control input-md" value="<?php echo isset( $_POST['label' ][ $key ] ) ? $_POST['label'][ $key ] : ''; ?>">
                                     </td>
                                     <td>
-                                        <input id="textdomain" name="table_value[<?php echo $key; ?>]" type="text" placeholder="Book Title" class="form-control input-md" value="<?php echo isset( $_POST['table_value' ][ $key ] ) ? $_POST['table_value'][ $key ] : ''; ?>">
+                                        <input id="textdomain" name="placeholder[<?php echo $key; ?>]" type="text" placeholder="Book Title" class="form-control input-md" value="<?php echo isset( $_POST['placeholder' ][ $key ] ) ? $_POST['placeholder'][ $key ] : ''; ?>">
                                     </td>
                                     <td>
                                         <textarea name="values[<?php echo $key; ?>]" id="values" cols="20" rows="3" class="form-control input-md" placeholder="key:value pair, one per line"><?php echo isset( $_POST['values' ][ $key ] ) ? $_POST['values'][ $key ] : ''; ?></textarea>
