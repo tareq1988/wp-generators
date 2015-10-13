@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1><?php _e( '%heading%', '%textdomain%' ); ?></h1>%retrieve_row%
+    <h2><?php _e( '%heading%', '%textdomain%' ); ?></h2>%retrieve_row%
 
     <form action="" method="post">
 
