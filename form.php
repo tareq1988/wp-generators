@@ -1,24 +1,58 @@
 <?php
 
 function build_rows( $edit = false ) {
-    $rows      = "\n";
-    $indent    = '                ';
-    $tab       = '    ';
+    $rows           = "\n";
+    $indent         = '                ';
+    $tab            = '    ';
+    $generator      = $_POST['generate_func'] == 'on' ? true : false;
+    $generator_func = 'erp_html_form_input';
+
+    if ( $generator ) {
+        $rows .= $tab . $tab . '<ol class="erp-form-fields">' . "\n";
+    } else {
+        $rows .= $tab . $tab . '<table class="form-table">' . "\n";
+        $rows .= $tab . $tab . $tab . '<tbody>' . "\n";
+    }
 
     foreach ($_POST['input_type'] as $key => $input_type) {
-        $rows     .= $indent . sprintf( '<tr class="row-%s">', str_replace( '_', '-', $_POST['name'][$key] ) ) . "\n";
-        $rows     .= $indent . $tab . "<th scope=\"row\">\n";
-        $required = ( $_POST['required'][$key] == 'yes' ) ? ' required="required"' : '';
 
-        if ( ! in_array( $input_type, array( 'checkbox', 'radio' ) ) ) {
-            $rows .= $indent . $tab . $tab . sprintf( '<label for="%s"><?php _e( \'%s\', \'%s\' ); ?></label>', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'] ) . "\n";
+        if ( $generator ) {
+            $rows     .= str_repeat( $tab, 3 ) . sprintf( '<li class="erp-form-field row-%s">', str_replace( '_', '-', $_POST['name'][$key] ) ) . "\n";
         } else {
-            $rows .= $indent . $tab . $tab . sprintf( '<?php _e( \'%s\', \'%s\' ); ?>', $_POST['label'][$key], $_POST['textdomain'] ) . "\n";
+            $rows     .= $indent . sprintf( '<tr class="row-%s">', str_replace( '_', '-', $_POST['name'][$key] ) ) . "\n";
+            $rows     .= $indent . $tab . "<th scope=\"row\">\n";
         }
 
-        $rows .= $indent . $tab . "</th>\n";
+        $required = ( $_POST['required'][$key] == 'yes' ) ? ' required="required"' : '';
 
-        $rows .= $indent . $tab . "<td>\n";
+        if ( ! $generator ) {
+
+            if ( ! in_array( $input_type, array( 'checkbox', 'radio' ) ) ) {
+                $rows .= $indent . $tab . $tab . sprintf( '<label for="%s"><?php _e( \'%s\', \'%s\' ); ?></label>', $_POST['name'][$key], $_POST['label'][$key], $_POST['textdomain'] ) . "\n";
+            } else {
+                $rows .= $indent . $tab . $tab . sprintf( '<?php _e( \'%s\', \'%s\' ); ?>', $_POST['label'][$key], $_POST['textdomain'] ) . "\n";
+            }
+
+            $rows .= $indent . $tab . "</th>\n";
+            $rows .= $indent . $tab . "<td>\n";
+        }
+
+        if ( $generator ) {
+            $rows .= str_repeat( $tab, 4 ) .  '<?php ' . $generator_func . '( array(' . "\n";
+            $rows .= str_repeat( $tab, 5 ) . sprintf( "'label' => __( '%s', '%s' ),\n", $_POST['label'][$key], $_POST['textdomain'] );
+            $rows .= str_repeat( $tab, 5 ) . sprintf( "'name' => '%s',\n", $_POST['name'][$key] );
+            $rows .= str_repeat( $tab, 5 ) . sprintf( "'id' => '%s',\n", $_POST['name'][$key] );
+            $rows .= str_repeat( $tab, 5 ) . sprintf( "'required' => %s,\n", $_POST['required'][$key] == 'yes' ? 'true' : 'false' );
+            $rows .= str_repeat( $tab, 5 ) . sprintf( "'type' => '%s',\n", $input_type );
+
+            if ( ! empty( $_POST['placeholder'][ $key ] ) ) {
+                $rows .= str_repeat( $tab, 5 ) . sprintf( "'placeholder' => __( '%s', '%s' ),\n", $_POST['placeholder'][$key], $_POST['textdomain'] );
+            }
+
+            if ( ! empty( $_POST['help'][ $key ] ) ) {
+                $rows .= str_repeat( $tab, 5 ) . sprintf( "'help' => __( '%s', '%s' ),\n", $_POST['help'][$key], $_POST['textdomain'] );
+            }
+        }
 
         switch ($input_type) {
             case 'text':
@@ -29,7 +63,17 @@ function build_rows( $edit = false ) {
                     $value = sprintf( '<?php echo esc_attr( $item->%s ); ?>', $_POST['name'][$key] );
                 }
 
-                $rows .= $indent . $tab . $tab . sprintf( '<input type="%6$s" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required, $input_type ) . "\n";
+                if ( $generator ) {
+                    $rows .= str_repeat( $tab, 5 ) . "'class' => 'regular-text',\n";
+
+                    if ( $edit ) {
+                        $rows .= str_repeat( $tab, 5 ) . sprintf( "'value' => \$item->%s,\n", $_POST['name'][$key] );
+                    }
+
+                } else {
+                    $rows .= $indent . $tab . $tab . sprintf( '<input type="%6$s" name="%1$s" id="%1$s" class="regular-text" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" value="%4$s"%5$s />', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required, $input_type ) . "\n";
+                }
+
                 break;
 
             case 'textarea':
@@ -38,11 +82,33 @@ function build_rows( $edit = false ) {
                 if ( $edit ) {
                     $value = sprintf( '<?php echo esc_textarea( $item->%s ); ?>', $_POST['name'][$key] );
                 }
-                $rows .= $indent . $tab . $tab . sprintf( '<textarea name="%1$s" id="%1$s"placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" rows="5" cols="30"%5$s>%4$s</textarea>', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required ) . "\n";
+
+                if ( $generator ) {
+
+                    $rows .= str_repeat( $tab, 5 ) . "'custom_attr' => array( 'rows' => 5, 'cols' => 30 ),\n";
+
+                    if ( $edit ) {
+                        $rows .= str_repeat( $tab, 5 ) . sprintf( "'value' => \$item->%s,\n", $_POST['name'][$key] );
+                    }
+
+                } else {
+                    $rows .= $indent . $tab . $tab . sprintf( '<textarea name="%1$s" id="%1$s" placeholder="<?php echo esc_attr( \'%2$s\', \'%3$s\' ); ?>" rows="5" cols="30"%5$s>%4$s</textarea>', $_POST['name'][$key], $_POST['placeholder'][$key], $_POST['textdomain'], $value, $required ) . "\n";
+                }
+
                 break;
 
             case 'select':
-                $rows .= $indent . $tab . $tab . sprintf( '<select name="%1$s" id="%1$s"%2$s>', $_POST['name'][$key], $required ) . "\n";
+
+                if ( $generator ) {
+
+                    if ( $edit ) {
+                        $rows .= str_repeat( $tab, 5 ) . sprintf( "'value' => \$item->%s,\n", $_POST['name'][$key] );
+                    }
+
+                    $rows .= str_repeat( $tab, 5 ) . "'options' => array(\n";
+                } else {
+                    $rows .= $indent . $tab . $tab . sprintf( '<select name="%1$s" id="%1$s"%2$s>', $_POST['name'][$key], $required ) . "\n";
+                }
 
                 $options = explode( "\n", $_POST['values'][ $key ] );
                 if ( $options ) {
@@ -54,11 +120,19 @@ function build_rows( $edit = false ) {
                             $selected = sprintf( ' <?php selected( $item->%s, \'%s\' ); ?>', $_POST['name'][$key], $option[0] );
                         }
 
-                        $rows .= $indent . $tab . $tab . $tab . sprintf( '<option value="%s"%s><?php echo __( \'%s\', \'%s\' ); ?></option>', $option[0], $selected, trim( $option[1] ), $_POST['textdomain'] ) . "\n";
+                        if ( $generator ) {
+                            $rows .= str_repeat( $tab, 6 ) . sprintf( "'%s' => __( '%s', '%s' ),\n", $option[0], trim( $option[1] ), $_POST['textdomain'] );
+                        } else {
+                            $rows .= $indent . $tab . $tab . $tab . sprintf( '<option value="%s"%s><?php echo __( \'%s\', \'%s\' ); ?></option>', $option[0], $selected, trim( $option[1] ), $_POST['textdomain'] ) . "\n";
+                        }
                     }
                 }
 
-                $rows .= $indent . $tab . $tab . "</select>\n";
+                if ( $generator ) {
+                    $rows .= str_repeat( $tab, 5 ) . "),\n";
+                } else {
+                    $rows .= $indent . $tab . $tab . "</select>\n";
+                }
                 break;
 
             case 'checkbox':
@@ -68,7 +142,16 @@ function build_rows( $edit = false ) {
                     $checked = sprintf( ' <?php checked( $item->%s, \'on\' ); ?>', $_POST['name'][$key] );
                 }
 
-                $rows .= $indent . $tab . $tab . sprintf( '<label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s" value="on"%4$s%5$s /> <?php _e( \'%2$s\', \'%3$s\' ); ?></label>', $_POST['name'][$key], $_POST['values'][$key], $_POST['textdomain'], $checked, $required ) . "\n";
+                if ( ! $generator ) {
+                    $rows .= $indent . $tab . $tab . sprintf( '<label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s" value="on"%4$s%5$s /> <?php _e( \'%2$s\', \'%3$s\' ); ?></label>', $_POST['name'][$key], $_POST['values'][$key], $_POST['textdomain'], $checked, $required ) . "\n";
+                } else {
+                    $rows .= str_repeat( $tab, 5 ) . sprintf( "'help' => __( '%s', '%s' ),\n", $_POST['values'][$key], trim( $option[1] ), $_POST['textdomain'] );
+
+                    if ( $edit ) {
+                        $rows .= str_repeat( $tab, 5 ) . sprintf( "'value' => \$item->%s,\n", $_POST['name'][$key] );
+                    }
+                }
+
                 break;
 
             default:
@@ -76,7 +159,7 @@ function build_rows( $edit = false ) {
                 break;
         }
 
-        if ( ! empty( $_POST['help'][ $key ] ) ) {
+        if ( ! empty( $_POST['help'][ $key ] ) && ! $generator ) {
             if ( $input_type == 'textarea' ) {
                 $rows .= $indent . $tab . $tab . '<p class="description"><?php _e(\'' . $_POST['help'][$key] . "', '{$_POST['textdomain']}' ); ?></p>\n";
             } else {
@@ -84,8 +167,22 @@ function build_rows( $edit = false ) {
             }
         }
 
-        $rows .= $indent . $tab . "</td>\n";
-        $rows .= $indent . "</tr>\n";
+        if ( ! $generator ) {
+
+            $rows .= $indent . $tab . "</td>\n";
+            $rows .= $indent . "</tr>\n";
+        } else {
+            $rows .= str_repeat( $tab, 4 ) .  ') ); ?>' . "\n";
+
+            $rows .= str_repeat( $tab, 3 ) .  "</li>\n";
+        }
+    }
+
+    if ( $generator ) {
+        $rows .= $tab . $tab . '</ol>' . "\n";
+    } else {
+        $rows .= $tab . $tab . $tab . '</tbody>' . "\n";
+        $rows .= $tab . $tab . '</table>' . "\n";
     }
 
     $rows .= '             ';
@@ -298,6 +395,16 @@ include 'header.php'; ?>
                         <label class="checkbox-inline" for="date_field-1">
                             <input type="hidden" name="date_field" value="off">
                             <input type="checkbox" name="date_field" id="date_field-1" value="on" <?php echo isset( $_POST['date_field'] ) && $_POST['date_field'] == 'on' ? 'checked': ''; ?>> Add date field on insert statement
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="generate_func">Fields with Generator Function</label>
+                    <div class="col-md-6">
+                        <label class="checkbox-inline" for="generate_func-1">
+                            <input type="hidden" name="generate_func" value="off">
+                            <input type="checkbox" name="generate_func" id="generate_func-1" value="on" <?php echo isset( $_POST['generate_func'] ) && $_POST['generate_func'] == 'on' ? 'checked': ''; ?>> Instead of normal HTML field, enable form generator function
                         </label>
                     </div>
                 </div>

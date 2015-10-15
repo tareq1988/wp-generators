@@ -2,10 +2,7 @@
     <h2><?php _e( '%heading%', '%textdomain%' ); ?></h2>%retrieve_row%
 
     <form action="" method="post">
-
-        <table class="form-table">
-            <tbody>%rows%</tbody>
-        </table>
+        %rows%
 
         <input type="hidden" name="field_id" value="%field_id%">
 
