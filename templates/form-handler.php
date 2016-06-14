@@ -62,9 +62,15 @@ class Form_Handler {
         }
 
         if ( is_wp_error( $insert_id ) ) {
-            $redirect_to = add_query_arg( array( 'message' => 'error' ), $page_url );
+            $redirect_to = add_query_arg(
+                array( 'error' => urlencode($insert_id->get_error_message()) ),
+                $page_url
+            );
         } else {
-            $redirect_to = add_query_arg( array( 'message' => 'success' ), $page_url );
+            $redirect_to = add_query_arg(
+                array( 'success' => urlencode(__( 'Succesfully saved!', '%textdomain%' )) ),
+                $page_url
+            );
         }
 
         wp_safe_redirect( $redirect_to );
