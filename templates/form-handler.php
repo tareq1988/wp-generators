@@ -42,7 +42,7 @@ class Form_Handler {
 %required_form_fields%        // bail out if error found
         if ( $errors ) {
             $first_error = reset( $errors );
-            $redirect_to = add_query_arg( array( 'error' => $first_error ), $page_url );
+            $redirect_to = add_query_arg( array( 'error' => urlencode($first_error) ), $page_url );
             wp_safe_redirect( $redirect_to );
             exit;
         }
