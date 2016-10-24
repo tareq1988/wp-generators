@@ -375,7 +375,7 @@ include 'header.php'; ?>
                                     <input id="textdomain" name="label[1]" type="text" placeholder="Field Label" class="form-control input-md">
                                 </td>
                                 <td>
-                                    <input id="textdomain" name="table_value[1]" type="text" placeholder="Book Title" class="form-control input-md">
+                                    <input id="textdomain" name="placeholder[1]" type="text" placeholder="Book Title" class="form-control input-md">
                                 </td>
                                 <td>
                                     <textarea name="values[1]" id="values" cols="20" rows="3" class="form-control input-md" placeholder="key:value pair, one per line"></textarea>
