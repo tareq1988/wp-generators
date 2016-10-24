@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-4 control-label" for="file_prefix">File Name Prefix</label>
+                        <label class="col-md-4 control-label" for="file_prefix">Singular File Name Prefix</label>
                         <div class="col-md-5">
                             <div class="input-group">
                                 <input id="file_prefix" name="file_prefix" type="text" placeholder="transaction" class="form-control input-md" value="<?php echo isset( $_POST['file_prefix' ] ) ? $_POST['file_prefix'] : ''; ?>">
